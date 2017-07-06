@@ -23,15 +23,15 @@ public class AnimalDAO extends GenericDAO<Integer, Animal> {
 		return retorno;
 	}
 	
-	public Animal findEager(Integer id) {
+	public List<Animal> bucarAnimalPorAlergia(Integer id) {
 		String sql = "select a from Animal a"
-				+ " inner join fetch a.alergias al"
-				+ " where al.id = :id"
-				+ " group by a";//RELIZAR O INNER JOIN COMO SE NO BANCO
+				+ " inner join fetch a.alergias al"//fetch = carga eagger
+				+ " where al.id = :id";
+//				+ " group by a";//RELIZAR O INNER JOIN COMO SE NO BANCO
 		TypedQuery<Animal> query = super.getEntityManager().createQuery(sql, Animal.class);
 		query.setParameter("id", id);
 		try {
-			Animal retorno = query.getSingleResult();
+			List<Animal> retorno = query.getResultList();
 			return retorno;
 		} catch (NoResultException ex) {
 			return null;

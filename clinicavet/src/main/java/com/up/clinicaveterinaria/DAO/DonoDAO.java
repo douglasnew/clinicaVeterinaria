@@ -1,5 +1,6 @@
 package com.up.clinicaveterinaria.DAO;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -36,7 +37,8 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 		return retorno;
 	}
 
-	public Dono findEager(Integer id) {
+	public Dono findEager(Integer id) 
+	{
 		String sql = "select d from Dono d " 
 				+ " inner join fetch d.animais" 
 				+ " where d.id = :idDono";
@@ -48,5 +50,22 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 		} catch (NoResultException ex) {
 			return null;
 		}
+	}
+	
+	public List<Dono> listarPessoas(String nomeCidade, Date nascidoDepoisDe) 
+	{
+		String sql = "select d from Dono d"
+				+ " inner join fetch d.endereco"
+				+ " where d.endereco.cidade = :cidDono"
+				+ " and d.nascimento < :nascDono";
+		TypedQuery<Dono> query = super.getEntityManager().createQuery(sql, Dono.class);
+		query.setParameter("cidDono", nomeCidade);
+		query.setParameter("nascDono", nascidoDepoisDe);
+		try {
+			List<Dono> retorno = query.getResultList();
+			return retorno;
+		} catch (NoResultException ex) {
+			return null;
+		}		
 	}
 }
