@@ -25,9 +25,7 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 	}
 
 	public List<Dono> listarPessoasQuePossuemTipoAnimal(String acronimo) {
-		String sql = "select d from Dono d" 
-				+ " inner join d.animais a" 
-				+ " where a.especie.tipoAnimal.acronimo = :acro"
+		String sql = "select d from Dono d" + " inner join d.animais a" + " where a.especie.tipoAnimal.acronimo = :acro"
 				+ " group by d";
 		Query query = super.getEntityManager().createQuery(sql);
 		query.setParameter("acro", acronimo);
@@ -37,11 +35,8 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 		return retorno;
 	}
 
-	public Dono findEager(Integer id) 
-	{
-		String sql = "select d from Dono d " 
-				+ " inner join fetch d.animais" 
-				+ " where d.id = :idDono";
+	public Dono findEager(Integer id) {
+		String sql = "select d from Dono d " + " inner join fetch d.animais" + " where d.id = :idDono";
 		TypedQuery<Dono> query = super.getEntityManager().createQuery(sql, Dono.class);
 		query.setParameter("idDono", id);
 		try {
@@ -51,12 +46,9 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 			return null;
 		}
 	}
-	
-	public List<Dono> listarPessoas(String nomeCidade, Date nascidoDepoisDe) 
-	{
-		String sql = "select d from Dono d"
-				+ " inner join fetch d.endereco"
-				+ " where d.endereco.cidade = :cidDono"
+
+	public List<Dono> listarPessoas(String nomeCidade, Date nascidoDepoisDe) {
+		String sql = "select d from Dono d" + " inner join fetch d.endereco" + " where d.endereco.cidade = :cidDono"
 				+ " and d.nascimento < :nascDono";
 		TypedQuery<Dono> query = super.getEntityManager().createQuery(sql, Dono.class);
 		query.setParameter("cidDono", nomeCidade);
@@ -66,6 +58,33 @@ public class DonoDAO extends GenericDAO<Integer, Dono> {
 			return retorno;
 		} catch (NoResultException ex) {
 			return null;
-		}		
+		}
+	}
+
+	public Dono findByCPF(Long cpf) {
+		Query query = super.getEntityManager().createNamedQuery("Dono.findBycpf");
+		query.setParameter("cpf", cpf);
+
+		Dono retorno = (Dono) query.getSingleResult();
+		return retorno;
+	}
+
+	public List<Dono> listarMoradores(String cidade, boolean ordenacaoAscendente) {
+		
+		Query query;
+		if(ordenacaoAscendente == true) {
+			query = super.getEntityManager().createNamedQuery("Dono.listarMoradoresAsc");
+		} else {
+			query = super.getEntityManager().createNamedQuery("Dono.listarMoradoresAsc");
+		}
+		query.setParameter("cidade", cidade);
+
+		try {
+			List<Dono> retorno = query.getResultList();
+			return retorno;
+		} catch (NoResultException e) {
+			// TODO: handle exception
+			return null;
+		}
 	}
 }

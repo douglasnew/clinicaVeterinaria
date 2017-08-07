@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.up.clinicaveterinaria.model.Animal;
+import com.up.clinicaveterinaria.model.TipoAnimal;
 
 public class AnimalDAO extends GenericDAO<Integer, Animal> {
 
@@ -43,5 +44,18 @@ public class AnimalDAO extends GenericDAO<Integer, Animal> {
 //		@SuppressWarnings("unchecked")
 //		List<Animal> retorno = query.getResultList();
 //		return retorno;
+	}
+	
+	public List<Animal> listarAnimaisDoTipo(String acronimoTipo) 
+	{
+		Query query = super.getEntityManager().createNamedQuery("Animal.listarAnimaisDoTipo");
+		query.setParameter("acronimoTipo", acronimoTipo);
+		
+		try {
+			List<Animal> retorno = query.getResultList();
+			return retorno;
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

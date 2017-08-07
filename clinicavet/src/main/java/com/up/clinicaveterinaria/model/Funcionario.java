@@ -9,10 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="funcionario")
+@NamedQuery(name="Funcionario.listarVeterinario", query="SELECT f FROM Funcionario f"
+		+ " WHERE f.tipoFuncionario = 'VET'")
 public class Funcionario {
 	
 	@Id

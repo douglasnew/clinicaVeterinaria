@@ -9,12 +9,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="dono")
+@NamedQueries({
+	@NamedQuery(name="Dono.findBycpf", query="SELECT d FROM Dono d WHERE d.cpf = :cpf"),
+	@NamedQuery(name="Dono.listarMoradoresAsc", query="SELECT d FROM Dono d"
+			+ " inner join fetch d.endereco"
+			+ " where d.endereco.cidade = :cidade"
+			+ " order by d.nome asc"),
+	@NamedQuery(name="Dono.listarMoradoresDesc", query="SELECT d FROM Dono d"
+			+ " inner join fetch d.endereco"
+			+ " where d.endereco.cidade = :cidade"
+			+ " order by d.nome desc")
+})
 public class Dono {
 	
 	@Id//identificador

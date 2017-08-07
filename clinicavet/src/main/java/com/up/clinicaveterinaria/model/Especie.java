@@ -41,8 +41,6 @@ public class Especie {
 		this.animaisEspecie = animaisEspecie;
 	}
 
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}

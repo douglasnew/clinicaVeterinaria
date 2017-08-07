@@ -12,11 +12,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="animal")
+@NamedQuery(name="Animal.listarAnimaisDoTipo", query="SELECT a FROM Animal a"
+		+ " inner join fetch a.especie e"
+		+ " inner join fetch e.tipoAnimal ta"
+		+ " where ta.acronimo = :acronimoTipo")
 public class Animal {
 	
 	@Id
